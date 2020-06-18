@@ -2,6 +2,7 @@
 
 namespace JeroenG\Packager\Commands;
 
+use Illuminate\Support\Str;
 use JeroenG\Packager\Conveyor;
 use JeroenG\Packager\Wrapping;
 use Illuminate\Console\Command;
@@ -90,7 +91,7 @@ class NewPackage extends Command
         $this->info('Downloading skeleton...');
         $this->conveyor->downloadSkeleton();
         $manifest = (file_exists($this->conveyor->packagePath().'/rewriteRules.php')) ? $this->conveyor->packagePath().'/rewriteRules.php' : null;
-    
+
         $this->conveyor->renameFiles($manifest);
         $this->makeProgress();
 
@@ -102,8 +103,8 @@ class NewPackage extends Command
             ':lc:vendor',
             ':lc:package',
         ], [
-            studly_case($this->conveyor->vendor()),
-            studly_case($this->conveyor->package()),
+            Str::studly($this->conveyor->vendor()),
+            Str::studly($this->conveyor->package()),
             strtolower($this->conveyor->vendor()),
             strtolower($this->conveyor->package()),
         ]);

@@ -2,6 +2,8 @@
 
 namespace JeroenG\Packager;
 
+use Illuminate\Support\Str;
+
 class Wrapping
 {
     /**
@@ -87,7 +89,7 @@ class Wrapping
     public function addToComposer($vendor, $package)
     {
         return $this->replace('"psr-4": {', '"psr-4": {
-            "'.studly_case($vendor).'\\\\'.studly_case($package).'\\\\": "packages/'.$vendor.'/'.$package.'/src",')
+            "'. Str::studly($vendor).'\\\\'. Str::studly($package).'\\\\": "packages/'.$vendor.'/'.$package.'/src",')
                     ->fillInFile(base_path('composer.json'));
     }
 
@@ -118,10 +120,10 @@ class Wrapping
          */', '
          * Application Service Providers...
          */
-        '.studly_case($vendor).'\\'.studly_case($package).'\\'.studly_case($package).'ServiceProvider::class,')
-        ->replace("'aliases' => [", 
+        '. Str::studly($vendor).'\\'. Str::studly($package).'\\'. Str::studly($package).'ServiceProvider::class,')
+        ->replace("'aliases' => [",
         "'aliases' => [
-        ".'\''.studly_case($package).'\' => '.studly_case($vendor).'\\'.studly_case($package).'\\Facades\\'.studly_case($package).'::class,')
+        ".'\''. Str::studly($package).'\' => '. Str::studly($vendor).'\\'. Str::studly($package).'\\Facades\\'. Str::studly($package).'::class,')
         ->fillInFile(config_path('app.php'));
     }
 
@@ -134,7 +136,7 @@ class Wrapping
      */
     public function removeFromProviders($vendor, $package)
     {
-        return $this->replace(studly_case($vendor).'\\'.studly_case($package).'\\'.studly_case($package).'ServiceProvider::class,', '')
+        return $this->replace(Str::studly($vendor).'\\'. Str::studly($package).'\\'. Str::studly($package).'ServiceProvider::class,', '')
                     ->fillInFile(config_path('app.php'));
     }
 }

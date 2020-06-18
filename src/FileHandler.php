@@ -5,6 +5,7 @@ namespace JeroenG\Packager;
 use ZipArchive;
 use RuntimeException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Str;
 
 trait FileHandler
 {
@@ -157,7 +158,7 @@ trait FileHandler
     {
         $bindings = [
             [':uc:vendor', ':uc:package', ':lc:vendor', ':lc:package'],
-            [studly_case($this->vendor()), studly_case($this->package()), strtolower($this->vendor()), strtolower($this->package())],
+            [Str::studly($this->vendor()), Str::studly($this->package()), strtolower($this->vendor()), strtolower($this->package())],
         ];
 
         $rewrites = require ($manifest === null) ? [
